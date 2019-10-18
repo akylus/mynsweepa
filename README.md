@@ -7,7 +7,7 @@
 
 The Classic and nostalgic minesweeper has been made from scratch!
 
-<img src="mynsweepa.png" alt="drawing" width="450"/>
+<img src="mynsweepa v1.1.png" alt="screenshot" width="450"/>
 
 How to play?
 ```
