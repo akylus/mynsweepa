@@ -1,4 +1,4 @@
-## Mynsweepa
+# Mynsweepa
 
 ### Download the game as an exe file or Play the game at one of these links:
 
