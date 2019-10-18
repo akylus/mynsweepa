@@ -1,9 +1,9 @@
 ## Mynsweepa
 
-### Play the game at one of these links:
+### Download the game as an exe file or Play the game at one of these links:
 
 - [Repl.it](https://repl.it/@akylus/mynsweepa)
-- [Website](https://myn-working--akylus.repl.co/)
+- [Trinket.io](https://myn-working--akylus.repl.co/)
 
 The Classic and nostalgic minesweeper has been made from scratch!
 
