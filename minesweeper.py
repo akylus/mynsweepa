@@ -100,10 +100,18 @@ def drawRect(surface):                                                      # Th
                 pygame.draw.rect(surface, (255,255,250), Rect(((i*25)+2,(j*25)+2),(20,20)))
             if(temp in right_click and temp not in clicked):                # If it is right-clicked, add an orange square to indicate a found mine
                 pygame.draw.rect(surface, (255,153,51), Rect(((i*25)+2,(j*25)+2),(20,20)))
+    for i in range(len(right_click)):
+        if right_click[i] in clicked:
+            del right_click[i]
+            break
 
 # Kaustubh Eppalapalli
 # github.com/akylus
-        
+
+def bottomBar(surface):
+    flaggedtext = flagfont.render('Mines Flagged : '+str(len(right_click))+' /'+str(num_of_mines), True, (255, 255, 255), (0,0,0))
+    surface.blit(flaggedtext,flagRect)
+    
 def redrawWindow(surface):                                                  # This function continually updates the screen
     surface.fill((0,0,0))                                                   # So here we need to fill the screen with a black color first
     drawGrid(width, rows, surface)                                          # Calling the function to draw the grid
@@ -111,6 +119,7 @@ def redrawWindow(surface):                                                  # Th
         m[i].drawMine()                                                     # Calling the Mine class' function to draw the red circle (mine)
     putNumbers(surface)                                                     # Calling the function to put the numbers onto the surface
     drawRect(surface)                                                       # Calling the function to add the squares overlay
+    bottomBar(surface)
     pygame.display.update()                                                 # Update the display
 
 def winChecker():                                                           # This function checks if the player found all the mines correctly
@@ -138,12 +147,20 @@ def cleanup(x,y):                                                           # Wh
         cleanup(x+1,y)
     if(y < len(zero_array[1])-3):
         cleanup(x,y+1)
+    if(x > 0 and y > 0):                                                    # Checking for corners
+        cleanup(x-1,y-1)
+    if(x > 0 and y < len(zero_array[1])-3):
+        cleanup(x-1,y+1)
+    if(y > 0 and x < len(zero_array[1])-3):                                           
+        cleanup(x+1,y-1)
+    if(y < len(zero_array[1])-3 and x < len(zero_array[1])-3):
+        cleanup(x+1,y+1)
 
 
-def main():
+def main(x):
     pygame.init()                                                           # Making below variables global so that they can be accessible everywhere
-    global width, rows, num_of_mines, m, textRect, numbers, zero_array, unique_mines, clicked, right_click
-    num_of_mines = 40                                                       # Change to alter the number of mines in game
+    global width, rows, num_of_mines, m, textRect, numbers, zero_array, unique_mines, clicked, right_click, flaggedtext,flagRect, flagfont
+    num_of_mines = x                                                       # Change to alter the number of mines in game
     width = 500
     rows = 20
     zero_array = []                                                         # 2D List simulation of the boxes
@@ -152,11 +169,15 @@ def main():
     unique_mines = []                                                       # Mine positions
     clicked = []                                                            # List to store left-clicks
     right_click = []                                                        # List to store the positions where right-click was pressed
-    win = pygame.display.set_mode((width, width))                           # Here, we're setting the display height and width (both of size width)
+    win = pygame.display.set_mode((width, width+50))                           # Here, we're setting the display height and width (both of size width)
     pygame.display.set_caption('Mynsweepa')                                 # Set the name
-    font = pygame.font.Font('Timea.ttf', 16)
+    font = pygame.font.Font('Timea.ttf', 12)
     numbers = numberMaker(font)
     textRect = font.render('1', True, (255, 255, 255), (0,0,0)).get_rect()  # Rendering the font needed for the text
+    flagfont = pygame.font.Font('Timea.ttf', 20)
+    flaggedtext = flagfont.render('Mines Flagged : '+str(len(right_click)), True, (255, 255, 255), (0,0,0))
+    flagRect = flagfont.render('Mines Flagged :', True, (255, 255, 255), (0,0,0)).get_rect()
+    flagRect.center = (0+100, width+25)                        # Multiply that position with 25 (To locate the centre of the box) and add 13 or 15 for adjustment
     for i in range(0,22):
         temp = [0]*22
         zero_array.append(temp)                                             # Initialize zero_array with completely zeros
@@ -195,7 +216,7 @@ def main():
                         clicked.append([x,y])
                         redrawWindow(win)                                   # If mine, bye bye
                         message_box('Uh-Oh!', 'You hit a mine! Play again.')
-                        main()                                              # Call to the main function to restart the game
+                        main(40)                                              # Call to the main function to restart the game
                     if(zero_array[y+1][x+1] == 0):                          # If clicked on an empty space, clear all neighboring empty spaces
                         cleanup(x,y)
                     else:
@@ -209,7 +230,7 @@ def main():
             if winChecker():                                                # Check if won
                 redrawWindow(win)
                 message_box('Yaay!','Congratulations! You found all the mines. Play again!')
-                main()
+                main(40)
         redrawWindow(win)                                                   # Call to the redraw function to redraw the screen repeatedly
         #drawLayer(win)
-main()                                                                      # Call to main function to start the program.
+main(40)                                                                      # Call to main function to start the program.
