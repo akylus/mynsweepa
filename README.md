@@ -1,6 +1,6 @@
 # Mynsweepa
 
-### Download the game as an exe file or Play the game at one of these links:
+### Play the game at one of these links:
 
 - [Repl.it](https://repl.it/@akylus/mynsweepa)
 - [Trinket.io](https://myn-working--akylus.repl.co/)
